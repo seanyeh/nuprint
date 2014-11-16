@@ -127,6 +127,13 @@ function genLoginSteps(env){
                 form.submit();
                 return;
             }, username, password);
+        },
+        function() {
+            var title = getPage().evaluate(function(){
+                return document.title;
+            });
+
+            ASSERT(title !== "Login", "Login failed");
         }
     ];
 }
@@ -214,7 +221,6 @@ var LISTJOBS_STEPS = [
 
     function(){
         getPage().evaluate(function(){
-            var map = Array.prototype.map;
             var getInnerText = function(item){ return item.innerText.trim(); };
 
             var columnNames = [
@@ -510,15 +516,13 @@ function main(env){
     }
     else if (CONFIG.list_jobs){
         listJobs(env);
-
     }
     // If files or printers not specified, print help
-    else if (! ("printer" in CONFIG && files.length > 0)){
+    else if (! ("printer" in CONFIG && CONFIG.files.length > 0)){
         argParser.printHelp();
         phantom.exit(0);
     }
     else {
-
         // Ask for confirmation first
         if (!CONFIG.no_confirm){
             console.log("Below is a summary of your print job.");
