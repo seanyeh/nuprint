@@ -69,7 +69,7 @@ function EXIT(msg){
 }
 
 function LOG(msg){
-    if (CONFIG.verbose){
+    if (!CONFIG.quiet){
         console.log(msg);
     }
 }
@@ -85,9 +85,7 @@ function getPage(){
         self.instance = new WebPage();
 
         self.instance.onConsoleMessage = function(msg){
-            if (CONFIG.verbose){
-                console.log(msg);
-            }
+            console.log(msg);
         };
 
         self.instance.onLoadStarted = function(){
@@ -460,8 +458,8 @@ function main(env){
 
     var argRules = [
         {
-            flags: ["-v", "--verbose"],
-            help: "Set verbosity.",
+            flags: ["-q", "--quiet"],
+            help: "Don't output debug logs.",
             boolFlag: true
         },
 
